@@ -1,3 +1,4 @@
+#include "receiver.h"
 #include <Arduino.h>
 #include <math.h>
 #include <stdio.h>
@@ -38,12 +39,12 @@ static void note(const __FlashStringHelper *message) {
   Serial.print(F("# "));
   Serial.println(message);
 }
-static bool busy() { return awaitingVerdict; }
-static bool timedOut() {
+bool busy() { return awaitingVerdict; }
+bool timedOut() {
   return awaitingVerdict && millis() - verdictWaitStartMs >= 30000UL;
 }
 // Call once, immediately BEFORE sending E done / E aborted / E overflow.
-static bool beginWait() {
+bool beginWait() {
   if (awaitingVerdict) return false;
   receivedRepCount = 0;
   latestRepResult = RepResult{};
@@ -123,7 +124,7 @@ static void processRepVerdict(char *line) {
 
 // Use this entry point if YOUR firmware already reads Serial1.
 // Pass one complete, null-terminated line; do not also call poll().
-static void acceptResultsLine(const char *line) {
+void acceptResultsLine(const char *line) {
   if (!line) return;
   char complete[64];
   size_t n = 0;
@@ -136,7 +137,7 @@ static void acceptResultsLine(const char *line) {
   else if (strncmp(complete, "V ", 2) == 0) processVerdict(complete);
 }
 
-static void poll() {
+void poll() {
   // The tally script's reply arrives on the same UART that carries samples.
   // Bound work per loop and discard overlong lines through their newline.
   for (uint8_t processed = 0; processed < 16 && Serial1.available() > 0; ++processed) {
