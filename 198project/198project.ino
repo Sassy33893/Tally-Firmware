@@ -16,7 +16,7 @@ constexpr int COLLECT_BUTTON_PIN = 3;
 
 
 //variables
-volatile bool serverOn = false;
+volatile bool serverOn = true;
 volatile bool collectData = false;
 
 
