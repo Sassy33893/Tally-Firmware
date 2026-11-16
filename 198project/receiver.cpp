@@ -13,6 +13,7 @@ struct RepResult {
   float durationS;
   char exercise[4];
 };
+
 static RepResult latestRepResult = {};
 static char repVerdictLine[64] = "";
 static char verdictLine[40] = "";

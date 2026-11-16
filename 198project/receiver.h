@@ -9,6 +9,8 @@ bool timedOut();
 
 bool beginWait();
 
+void poll();
+
 void acceptResultsLine(const char *line);
 
 } 
